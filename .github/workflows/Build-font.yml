@@ -1,14 +1,6 @@
-name: Build Font
+name: Build iosevka Font
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-    inputs:
-      font_version:
-        description: 'Iosevka Version'
-        required: true
-        default: 'latest'
+on: [pull_request]
 
 jobs:
   build:
