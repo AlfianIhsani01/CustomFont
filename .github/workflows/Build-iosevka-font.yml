@@ -20,19 +20,24 @@ jobs:
         sudo apt update
         sudo apt install -y ttfautohint fontforge python3-fontforge
         sudo apt upgrade
-		 - name: Fonts info
-				run:		|
-					font_name=Fonts
+
+		- name: Fonts info
+			run: |
+				font_name=Fonts
+
+    - name: Download font & font patcher
+      run: |
+        echo $PWD
+        git clone --depth 1 https://github.com/be5invis/Iosevka.git
+        curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip --output FontPatcher.zip
+        unzip FontPatcher.zip -d nerd-fonts
 
     - name: Build iosevka font
       run: |
+        
+        ln -s $PWD/private-build-plans.toml $PWD/Iosevka 
         npm install
         npm run build -- ttf::$font_name
-
-    - name: Download font patcher
-      run: |
-        curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip --output FontPatcher.zip
-        unzip FontPatcher.zip -d nerd-fonts
 
     - name: Patch fonts with Nerd Fonts
       run: |
