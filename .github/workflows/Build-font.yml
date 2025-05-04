@@ -38,7 +38,7 @@ jobs:
         sudo apt upgrade
 
     - name: Fonts options
-			run: |
+      run: |
         if [[ ${{ inputs.options }} == Iosevka ]]; do
 				  font_name=Dyve
           font_path=Iosevka/dist/$font_name/TTF/*[Rr]egular*
