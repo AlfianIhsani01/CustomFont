@@ -5,7 +5,7 @@ on:
     inputs:
       font_variant:
         required: true
-        default: "CommitMono"
+        default: "Default"
         type: string
 
   workflow_dispatch:
@@ -15,15 +15,15 @@ on:
         required: true
         type: choice
         options:
+          - Default
           - Iosevka
-          - CommitMono
           - MPlus
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+      - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Setup Node.js
@@ -44,9 +44,9 @@ jobs:
           font_path="Iosevka/dist/$font_name/TTF/*[Rr]egular*"
           git clone --depth 1 https://github.com/be5invis/Iosevka.git
           ln -s $PWD/private-build-plans.toml $PWD/Iosevka
-        elif [[ "${{ inputs.font_variant }}" == "CommitMono" ]]; then
-          font_name=CommitMono
-          font_path="CommitMono/*[Rr]egular*"
+        elif [[ "${{ inputs.font_variant }}" == "Default" ]]; then
+          font_name=Fonts
+          font_path="Fonts/*"
         elif [[ "${{ inputs.font_variant }}" == "MPlus" ]]; then
           font_name=MPlus
           mkdir MPlus
@@ -60,7 +60,7 @@ jobs:
         echo "font_name=$font_name" >> $GITHUB_ENV
         echo "font_path=$font_path" >> $GITHUB_ENV
 
-    - name: Download font & font patcher
+    - name: Download font patcher
       run: |
         echo $PWD
         curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip --output FontPatcher.zip
@@ -72,6 +72,7 @@ jobs:
           cd Iosevka
           npm install
           npm run build -- ttf::$font_name
+          cd ..
         else
           echo "Not building Iosevka font"
         fi
