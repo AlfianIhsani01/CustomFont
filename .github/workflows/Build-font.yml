@@ -34,10 +34,10 @@ jobs:
     - name: Install required packages
       run: |
         sudo apt update
-        sudo apt install -y ttfautohint fontforge python3-fontforge subversion
+        sudo apt install -y ttfautohint fontforge python3-fontforge
         sudo apt upgrade
 
-		- name: Fonts options
+    - name: Fonts options
 			run: |
         if [[ ${{ inputs.options }} == Iosevka ]]; do
 				  font_name=Dyve
