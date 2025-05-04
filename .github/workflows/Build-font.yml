@@ -1,0 +1,101 @@
+name: Build Font
+
+on:
+  workflow_call:
+    inputs:
+      font_variant:
+        required: true
+        default: "CommitMono"
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      font_variant:
+        description: 'Specify the font to build'
+        required: true
+        type: choice
+        options:
+          - Iosevka
+          - CommitMono
+          - MPlus
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install required packages
+      run: |
+        sudo apt update
+        sudo apt install -y ttfautohint fontforge python3-fontforge subversion
+        sudo apt upgrade
+
+		- name: Fonts options
+			run: |
+        if [[ ${{ inputs.options }} == Iosevka ]]; do
+				  font_name=Dyve
+          font_path=Iosevka/dist/$font_name/TTF/*[Rr]egular*
+          git clone --depth 1 https://github.com/be5invis/Iosevka.git
+          ln -s $PWD/private-build-plans.toml $PWD/Iosevka
+
+        elif [[ ${{ inputs.options }} == CommitMono ]]; do
+          font_path=CommitMono/*[Rr]egular*
+        elif [[ ${{ inputs.options }} == MPlus ]]
+          mkdir MPlus
+          curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MPLUSCodeLatin%5Bwdth%2Cwght%5D.ttf --output MPlus/MPLUSCodeLatin[wdth,wght].ttf
+          curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin50-Regular.ttf --output MPlus/MplusCodeLatin50-Regular.ttf
+          curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin60-Regular.ttf --output MPlus/MplusCodeLatin60-Regular.ttf
+          font_path=MPlus/*.ttf
+        else
+         echo "something wrong happened"
+         exit 1
+        fi
+
+    - name: Download font & font patcher
+      run: |
+        echo $PWD
+        curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip --output FontPatcher.zip
+        unzip FontPatcher.zip -d nerd-fonts
+
+    - name: Build iosevka font
+      run: |
+        if [[ ${{ inputs.options }} == Iosevka ]]; do
+          npm install
+          npm run build -- ttf::$font_name
+        else
+          echo "not Iosevka font"
+        fi
+
+    - name: Patch fonts with Nerd Fonts
+      run: |
+        mkdir -p patched-fonts
+        for font in ${font_path}; do
+          echo "Patching $font"
+          fontforge -script ./nerd-fonts/font-patcher \
+            --complete \
+            --careful \
+            --progressbars \
+            --outputdir "patched-fonts" \
+            "$font"
+        done
+      
+    - name: Upload original fonts
+      uses: actions/upload-artifact@v4
+      with:
+        name: $font_name-fonts-original
+        path: Iosevka/dist/$font_name
+        retention-days: 7
+
+    - name: Upload patched fonts
+      uses: actions/upload-artifact@v4
+      with:
+        name: $font_name-nerd-fonts
+        path: patched-fonts
+        retention-days: 7
