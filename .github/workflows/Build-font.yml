@@ -50,7 +50,6 @@ jobs:
         elif [[ "${{ inputs.font_variant }}" == "MPlus" ]]; then
           font_name=MPlus
           mkdir MPlus
-          curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MPLUSCodeLatin%5Bwdth%2Cwght%5D.ttf --output MPlus/MPLUSCodeLatin[wdth,wght].ttf
           curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin50-Regular.ttf --output MPlus/MplusCodeLatin50-Regular.ttf
           curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin60-Regular.ttf --output MPlus/MplusCodeLatin60-Regular.ttf
           font_path="MPlus/*.ttf"
