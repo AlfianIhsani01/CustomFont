@@ -39,24 +39,27 @@ jobs:
 
     - name: Fonts options
       run: |
-        if [[ ${{ inputs.options }} == Iosevka ]]; do
-				  font_name=Dyve
-          font_path=Iosevka/dist/$font_name/TTF/*[Rr]egular*
+        if [[ "${{ inputs.font_variant }}" == "Iosevka" ]]; then
+          font_name=Dyve
+          font_path="Iosevka/dist/$font_name/TTF/*[Rr]egular*"
           git clone --depth 1 https://github.com/be5invis/Iosevka.git
           ln -s $PWD/private-build-plans.toml $PWD/Iosevka
-
-        elif [[ ${{ inputs.options }} == CommitMono ]]; do
-          font_path=CommitMono/*[Rr]egular*
-        elif [[ ${{ inputs.options }} == MPlus ]]
+        elif [[ "${{ inputs.font_variant }}" == "CommitMono" ]]; then
+          font_name=CommitMono
+          font_path="CommitMono/*[Rr]egular*"
+        elif [[ "${{ inputs.font_variant }}" == "MPlus" ]]; then
+          font_name=MPlus
           mkdir MPlus
           curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MPLUSCodeLatin%5Bwdth%2Cwght%5D.ttf --output MPlus/MPLUSCodeLatin[wdth,wght].ttf
           curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin50-Regular.ttf --output MPlus/MplusCodeLatin50-Regular.ttf
           curl -L https://raw.githubusercontent.com/coz-m/MPLUS_FONTS/refs/heads/master/fonts/ttf/MplusCodeLatin60-Regular.ttf --output MPlus/MplusCodeLatin60-Regular.ttf
-          font_path=MPlus/*.ttf
+          font_path="MPlus/*.ttf"
         else
-         echo "something wrong happened"
-         exit 1
+          echo "Something wrong happened"
+          exit 1
         fi
+        echo "font_name=$font_name" >> $GITHUB_ENV
+        echo "font_path=$font_path" >> $GITHUB_ENV
 
     - name: Download font & font patcher
       run: |
@@ -66,11 +69,12 @@ jobs:
 
     - name: Build iosevka font
       run: |
-        if [[ ${{ inputs.options }} == Iosevka ]]; do
+        if [[ "${{ inputs.font_variant }}" == "Iosevka" ]]; then
+          cd Iosevka
           npm install
           npm run build -- ttf::$font_name
         else
-          echo "not Iosevka font"
+          echo "Not building Iosevka font"
         fi
 
     - name: Patch fonts with Nerd Fonts
@@ -89,13 +93,13 @@ jobs:
     - name: Upload original fonts
       uses: actions/upload-artifact@v4
       with:
-        name: $font_name-fonts-original
-        path: Iosevka/dist/$font_name
+        name: ${{ env.font_name }}-fonts-original
+        path: ${{ inputs.font_variant == 'Iosevka' && format('Iosevka/dist/{0}', env.font_name) || env.font_name }}
         retention-days: 7
 
     - name: Upload patched fonts
       uses: actions/upload-artifact@v4
       with:
-        name: $font_name-nerd-fonts
+        name: ${{ env.font_name }}-nerd-fonts
         path: patched-fonts
         retention-days: 7
