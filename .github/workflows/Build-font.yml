@@ -50,7 +50,7 @@ jobs:
               ;;
             Default)
               font_name="Fonts"
-              font_path="Fonts/*"
+              font_path="MyFonts/*"
               ;;
             MPlus)
               font_name="MPlus"
