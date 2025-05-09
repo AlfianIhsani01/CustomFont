@@ -55,9 +55,9 @@ jobs:
             MPlus)
               font_name="MPlus"
               mkdir -p MPlus
-              curl -L https://github.com/coz-m/MPLUS_FONTS/raw/refs/heads/master/fonts/otf/MplusCodeLatin50-Regular.otf -o MPlus/MplusCodeLatin50-Regular.ttf
+              curl -L https://github.com/coz-m/MPLUS_FONTS/raw/refs/heads/master/fonts/otf/MplusCodeLatin50-Regular.otf -o MPlus/MplusCodeLatin50-Regular.otf
               curl -L https://github.com/coz-m/MPLUS_FONTS/raw/refs/heads/master/fonts/otf/MplusCodeLatin60-Regular.otf -o MPlus/MplusCodeLatin60-Regular.otf
-              font_path="MPlus/*.ttf"
+              font_path="MPlus/*"
               ;;
             *)
               echo "Invalid font variant: ${{ inputs.font_variant }}"
