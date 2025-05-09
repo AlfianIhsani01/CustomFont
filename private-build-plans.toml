@@ -2,7 +2,7 @@
 family = "Dyve"
 spacing = "term"
 serifs = "sans"
-noCvSs = true
+noCvSs = false
 exportGlyphNames = false
 
 [buildPlans.Dyve.variants.design]
@@ -15,7 +15,7 @@ six = "straight-bar"
 seven = "straight-serifed"
 eight = "two-circles"
 nine = "straight-bar"
-zero = "slashed"
+zero = "dotted"
 capital-a = "straight-top-serifed"
 capital-b = "standard-unilateral-serifed"
 capital-c = "unilateral-inward-serifed"
@@ -25,13 +25,13 @@ capital-f = "top-left-serifed"
 capital-g = "toothless-corner-serifless-hooked"
 capital-h = "top-left-serifed"
 capital-i = "short-serifed"
-capital-j = "flat-hook-serifed"
+capital-j = "serifed"
 capital-k = "symmetric-connected-top-left-serifed"
 capital-l = "motion-serifed"
 capital-m = "hanging-motion-serifed"
 capital-n = "asymmetric-motion-serifed"
 capital-p = "closed-motion-serifed"
-capital-q = "curly-tailed"
+capital-q = "straight"
 capital-r = "straight-top-left-serifed"
 capital-s = "unilateral-inward-serifed"
 capital-t = "serifless"
@@ -53,7 +53,7 @@ i = "hooky"
 j = "flat-hook-serifed"
 k = "symmetric-connected-serifless"
 l = "serifed-flat-tailed"
-m = "earless-single-arch-short-leg-serifless"
+m = "earless-single-arch-serifless"
 n = "earless-corner-straight-serifless"
 p = "earless-corner-serifless"
 q = "earless-corner-tailed-serifless"
@@ -78,7 +78,10 @@ capital-gamma = "top-right-serifed"
 lower-gamma = "straight"
 capital-delta = "straight"
 lower-delta = "flat-top"
+lower-eta = "earless-corner-serifless"
+lower-theta = "capsule"
 lower-iota = "tailed-serifed"
+lower-kappa = "straight-top-left-serifed"
 capital-lambda = "straight-top-serifed"
 lower-lambda = "straight-turn"
 lower-mu = "toothed-bottom-right-serifed"
@@ -90,6 +93,7 @@ lower-upsilon = "straight-serifed"
 lower-phi = "neo-hellenic"
 lower-chi = "straight-bilateral-motion-serifed"
 lower-psi = "serifed"
+partial-derivative = "straight-bar"
 cyrl-a = "double-storey-hook-inward-serifed-toothless-rounded"
 cyrl-ve = "standard-unilateral-serifed"
 cyrl-capital-zhe = "symmetric-touching"
@@ -136,7 +140,6 @@ percent = "rings-continuous-slash-also-connected"
 bar = "force-upright"
 question = "corner"
 pilcrow = "high"
-partial-derivative = "straight-bar"
 micro-sign = "toothless-corner-motion-serifed"
 decorative-angle-brackets = "middle"
 lig-ltgteq = "flat"
@@ -148,12 +151,7 @@ lig-double-arrow-bar = "without-notch"
 lig-single-arrow-bar = "without-notch"
 
   [buildPlans.Dyve.ligations]
-  inherits = "dlig"
-
-[buildPlans.Dyve.weights.Light]
-shape = 300
-menu = 300
-css = 300
+  inherits = "wolfram"
 
 [buildPlans.Dyve.weights.Regular]
 shape = 400
@@ -164,6 +162,11 @@ css = 400
 shape = 700
 menu = 700
 css = 700
+
+[buildPlans.Dyve.weights.Light]
+shape = 300
+menu = 300
+css = 300
 
 [buildPlans.Dyve.widths.Normal]
 shape = 600
