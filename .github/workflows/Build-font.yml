@@ -98,11 +98,11 @@ jobs:
         with:
           name: ${{ env.font_name }}-fonts-original
           path: ${{ inputs.font_variant == 'Iosevka' && format('Iosevka/dist/{0}', env.font_name) || env.font_name }}
-          retention-days: 7
+          retention-days: 3
 
       - name: Upload patched fonts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.font_name }}-nerd-fonts
           path: patched-fonts
-          retention-days: 7
+          retention-days: 3
