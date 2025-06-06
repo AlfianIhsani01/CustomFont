@@ -87,8 +87,10 @@ jobs:
             echo "Patching $font"
             fontforge -script ./nerd-fonts/font-patcher \
               --complete \
-              --careful \
+              --boxdrawing \
               --progressbars \
+              --adjust-line-height \
+              --extension otf \
               --outputdir "patched-fonts" \
               "$font"
           done

@@ -1,0 +1,24 @@
+
+{
+    "name": "Alpine Linux",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": "."
+		},									
+    "features": {
+        "ghcr.io/tailscale/codespace/tailscale": {
+            "version": "latest"
+        }
+	},
+
+    "postCreateCommand": "sh ./.devcontainer/setup.sh",
+    "postStartCommand": "sudo /usr/sbin/sshd && which sshd",
+    "remoteUser": "akal",
+    "containerEnv": {
+        "SHELL": "/bin/zsh",
+        "TERM": "xterm-256color"
+    },
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/akal/.ssh,type=bind,consistency=cached"
+    ]
+}
